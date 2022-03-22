@@ -1,180 +1,21 @@
-###################################
-# general ignore patterns
-###################################
-
-build/
-obj/
-*.o
-Debug*/
-Release*/
-*.mode*
-*.app/
-*.pyc
-.svn/
-
-###################################
-# IDE specific
-###################################
-
-# XCode
-*.pbxuser
-*.perspective
-*.perspectivev3
-*.mode1v3
-*.mode2v3
-
-# XCode 4
-xcuserdata
-*.xcworkspace
-
-# Code::Blocks
-*.depend
-*.layout
-
-# Visual Studio
-*.sdf
-*.opensdf
-*.suo
-ipch/
-
-# Eclipse
-.metadata
-local.properties
-.externalToolBuilders
-
-
-###################################
-# OS Specific
-###################################
-
-# Linux
-*~
-# KDE
-.directory
-
-# OSX
-**/.DS_Store
-.DS_Store
-*.swp
-*~.nib
-# Thumbnails
-._*
-
-# Windows
-# Windows image file caches
-Thumbs.db
-# Folder config file
-Desktop.ini
-
-# Android
-.csettings
-/libs/openFrameworksCompiled/project/android/paths.make
-
-###################################
-# Misc filetypes
-###################################
-
-.mailmap
-*.mov
-
-###################################
-# EAGLE Cad
-###################################
-
-# Backup files
-*.s#?
-*.b#?
-*.l#?
-# Eagle project file
-# It contains a serial number and references to the file structure
-# on your computer.
-# comment the following line if you want to have your project file included.
-#eagle.epf
-# CAM files
-*.$$$
-*.cmp
-*.ly2
-*.l15
-*.sol
-*.plc
-*.stc
-*.sts
-*.crc
-*.crs
-*.dri
-*.drl
-*.gpi
-*.pls
-*.drd
-*.drd.*
-*.info
-*.eps
-
-###################################
-# Node.js
-###################################
-
-**/node_modules
-lib-cov
-lcov.info
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-pids
-logs
-results
-build
-.grunt
-
-###################################
-# App Specific 
-###################################
-
-
-
-
-
-###################################
-# official gitignore repo:
-# http://github.com/github/gitignore
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##########################################################################################
 # This .gitignore file should be placed at the root of your Unity project directory
 #
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
+# Get latest from https://github.com/github/gitignore/blob/master/Unity.gitignore
 #
-[Ll]ibrary/
-[Tt]emp/
-[Oo]bj/
-[Bb]uild/
-[Bb]uilds/
-[Ll]ogs/
-[Uu]ser[Ss]ettings/
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
 
-# Recordings can get excessive in size
-/[Rr]ecordings/
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/[Aa]ssets/**/*.meta
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
@@ -217,8 +58,9 @@ sysinfo.txt
 # Builds
 *.apk
 *.aab
-*.unitypackage
 *.app
+*.exe
+*.unitypackage
 
 # Crashlytics generated file
 crashlytics-build.properties
@@ -229,3 +71,14 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# IL2CPP build artifacts should be ignored
+*BackUpThisFolder_ButDontShipItWithYourGame
+
+# OSX specific files
+*DS_Store
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
