@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class destroyMesh : MonoBehaviour
 {
-    void Start()
+    public OVRPassthroughLayer passthorugh;
+    public OVRInput.Button button;
+    public OVRInput.Controller controller;
+    void Update()
     {
-        Destroy(gameObject, 3f);
+        if (OVRInput.GetDown(button, controller))
+        {
+            Destroy(gameObject);
+        }
     }
 }
