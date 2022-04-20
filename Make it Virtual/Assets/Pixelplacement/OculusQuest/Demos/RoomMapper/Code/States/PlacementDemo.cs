@@ -11,6 +11,8 @@ namespace Pixelplacement.RoomMapperDemo
         public GameObject floorContent;
         public GameObject wallContent;
         public GameObject ceilingContent;
+        public OVRInput.Button button;
+        public OVRInput.Controller controller;
 
         //Startup:
         protected override void Awake()
@@ -43,7 +45,7 @@ namespace Pixelplacement.RoomMapperDemo
                 cursor.rotation = Quaternion.LookRotation(hit.normal); //orient to surface
 
                 //place content based on surface orientation:
-                if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+                if (OVRInput.GetDown(button, controller))
                 {
                     //surface:
                     float surfaceDot = Vector3.Dot(hit.normal, Vector3.up);
