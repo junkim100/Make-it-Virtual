@@ -7,6 +7,10 @@ namespace Pixelplacement.XRTools
         //Public Variables:
         public ChildActivator cursor;
         public LineRenderer connectionLine;
+
+        public float groundCastDistance;
+        public float groundHeight;
+        public float groundDistance;
         
         //Private Variables:
         private float _lerpSpeed = 3.5f;
@@ -36,10 +40,9 @@ namespace Pixelplacement.XRTools
             //parts:
             Plane floor = new Plane(Vector3.up, RoomAnchor.Instance.transform.position);
             Ray castRay = new Ray(ovrCameraRig.centerEyeAnchor.position, ovrCameraRig.centerEyeAnchor.forward);
-            float castDistance;
             
             //cursor state:
-            if (floor.Raycast(castRay, out castDistance))
+            if (floor.Raycast(castRay, out groundCastDistance))
             {
                 if (!_onFloor)
                 {
@@ -57,18 +60,18 @@ namespace Pixelplacement.XRTools
             }
             
             //clamp:
-            if (castDistance <= 0 || castDistance > _maxCastDistance)
+            if (groundCastDistance <= 0 || groundCastDistance > _maxCastDistance)
             {
-                castDistance = _maxCastDistance;
+                groundCastDistance = _maxCastDistance;
             }
             
             // height is camera's height
             // groundDistance is distance from camera to floor
-            float height = ovrCameraRig.centerEyeAnchor.position.y;
-            float groundDistance = Mathf.Sqrt(Mathf.Pow(castDistance,2) - Mathf.Pow(height,2));
+            groundHeight = ovrCameraRig.centerEyeAnchor.position.y;
+            groundDistance = Mathf.Sqrt(Mathf.Pow(groundCastDistance,2) - Mathf.Pow(groundHeight,2));
             
             //position (force to floor):
-            Vector3 position = castRay.GetPoint(castDistance);
+            Vector3 position = castRay.GetPoint(groundCastDistance);
             if (_onFloor)
             {
                 position.y = RoomAnchor.Instance.transform.position.y;
@@ -96,6 +99,14 @@ namespace Pixelplacement.XRTools
                 connectionLine.SetPosition(0, headPosition);
                 connectionLine.SetPosition(3, headPosition);
             }
+
+            Debug.Log("groundCastDistance: " + groundCastDistance);
+            Debug.Log("groundHeight: " + groundHeight);
+            Debug.Log("groundDistance: " + groundDistance);
+            Debug.Log("transform.position: " + transform.position);
+            Debug.Log("transform.rotation: " + transform.rotation);
+            Debug.Log("Viewing Angle eulerAngles: " + ovrCameraRig.centerEyeAnchor.rotation.eulerAngles);
+            Debug.Log("Viewing Angle: " + ovrCameraRig.centerEyeAnchor.rotation);
             
             //confirmation:
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
