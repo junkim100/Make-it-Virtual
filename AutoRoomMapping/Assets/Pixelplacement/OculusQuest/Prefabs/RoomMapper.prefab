@@ -372,7 +372,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2482044695466222984
 Transform:
   m_ObjectHideFlags: 0
@@ -1385,7 +1385,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2482044695974119891
 Transform:
   m_ObjectHideFlags: 0
@@ -2921,8 +2921,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursor: {fileID: 2482044697099521139}
   connectionLine: {fileID: 2482044695466222987}
-  groundCastDistance: 0
-  groundHeight: 0
   groundDistance: 0
 --- !u!114 &2482044697099521139
 MonoBehaviour:
@@ -3084,6 +3082,9 @@ MonoBehaviour:
   locateWall: {fileID: 2482044697099521136}
   connectionLine: {fileID: 2482044695974119890}
   cursor: {fileID: 2482044697263903522}
+  ceilingDistance: 0
+  ceilingHeight: 0
+  firstCorner: {x: 0, y: 0, z: 0}
 --- !u!114 &2482044697263903522
 MonoBehaviour:
   m_ObjectHideFlags: 0
