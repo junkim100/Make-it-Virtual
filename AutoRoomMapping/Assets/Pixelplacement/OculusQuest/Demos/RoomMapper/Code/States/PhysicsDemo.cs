@@ -40,16 +40,16 @@ namespace Pixelplacement.RoomMapperDemo
             base.Update();
             
             //follow controller:
-            transform.SetPositionAndRotation(_rig.rightControllerAnchor.position, _rig.rightControllerAnchor.rotation);
+            transform.SetPositionAndRotation(_rig.leftControllerAnchor.position, _rig.leftControllerAnchor.rotation);
         
             //fire:
-            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+            if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
             {
                 ShootBall();
             }
             
             //prep:
-            if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
+            if (OVRInput.GetUp(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch))
             {
                 MakeBall();
             }

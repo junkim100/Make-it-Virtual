@@ -8,8 +8,6 @@ namespace Pixelplacement.XRTools
         public ChildActivator cursor;
         public LineRenderer connectionLine;
 
-        public float groundCastDistance;
-        public float groundHeight;
         public float groundDistance;
         
         //Private Variables:
@@ -40,7 +38,8 @@ namespace Pixelplacement.XRTools
             //parts:
             Plane floor = new Plane(Vector3.up, RoomAnchor.Instance.transform.position);
             Ray castRay = new Ray(ovrCameraRig.centerEyeAnchor.position, ovrCameraRig.centerEyeAnchor.forward);
-            
+            float groundCastDistance;
+
             //cursor state:
             if (floor.Raycast(castRay, out groundCastDistance))
             {
@@ -64,11 +63,6 @@ namespace Pixelplacement.XRTools
             {
                 groundCastDistance = _maxCastDistance;
             }
-            
-            // height is camera's height
-            // groundDistance is distance from camera to floor
-            groundHeight = ovrCameraRig.centerEyeAnchor.position.y;
-            groundDistance = Mathf.Sqrt(Mathf.Pow(groundCastDistance,2) - Mathf.Pow(groundHeight,2));
             
             //position (force to floor):
             Vector3 position = castRay.GetPoint(groundCastDistance);
@@ -99,14 +93,16 @@ namespace Pixelplacement.XRTools
                 connectionLine.SetPosition(0, headPosition);
                 connectionLine.SetPosition(3, headPosition);
             }
+            
+            // height is camera's height
+            // groundDistance is distance from camera to floor
+            float groundHeight = ovrCameraRig.centerEyeAnchor.position.y;
+            groundDistance = Mathf.Sqrt(Mathf.Pow(groundCastDistance,2) - Mathf.Pow(groundHeight,2));
 
             Debug.Log("groundCastDistance: " + groundCastDistance);
             Debug.Log("groundHeight: " + groundHeight);
             Debug.Log("groundDistance: " + groundDistance);
-            Debug.Log("transform.position: " + transform.position);
-            Debug.Log("transform.rotation: " + transform.rotation);
-            Debug.Log("Viewing Angle eulerAngles: " + ovrCameraRig.centerEyeAnchor.rotation.eulerAngles);
-            Debug.Log("Viewing Angle: " + ovrCameraRig.centerEyeAnchor.rotation);
+            Debug.Log("Viewing Angle: " + ovrCameraRig.centerEyeAnchor.rotation.eulerAngles.x);
             
             //confirmation:
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))

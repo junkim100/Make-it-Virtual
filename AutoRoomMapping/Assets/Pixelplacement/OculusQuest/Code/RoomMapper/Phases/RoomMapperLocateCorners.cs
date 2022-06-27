@@ -49,7 +49,7 @@ namespace Pixelplacement.XRTools
             
             //snap locator pose:
             cursor.transform.position = locateCeiling.transform.position;
-            Vector3 flatForward = Vector3.ProjectOnPlane(ovrCameraRig.rightControllerAnchor.forward, Vector3.up);
+            Vector3 flatForward = Vector3.ProjectOnPlane(ovrCameraRig.centerEyeAnchor.forward, Vector3.up);
             cursor.transform.rotation = Quaternion.LookRotation(flatForward);
             
             //lines:
@@ -105,10 +105,27 @@ namespace Pixelplacement.XRTools
                     instructions.transform.parent.gameObject.SetActive(true);
                 }
             }
+            //first corner?
+            else if (_ceilingCorners.Count == 0)
+            {
+                ChangeInstructions(_markNextCornerText);
+                
+                //reset to only corners in perimeter on first corner marking:
+                progress.SetPosition(0, cursor.transform.position);
+                _ceilingCorners.Add(locateCeiling.firstCorner);
+                
+                PlaceCornerMarker();
+                return;
+            }
+
+            Debug.Log("_ceilingCorners.Count: " + _ceilingCorners.Count);
+            Debug.Log("transform position: " + locateCeiling.transform.position);
+            Debug.Log("ceilingHeight: " + locateCeiling.ceilingHeight);
             
             //parts:
             Plane ceiling = new Plane(Vector3.down, locateCeiling.transform.position);
-            Ray castRay = new Ray(ovrCameraRig.rightControllerAnchor.position, ovrCameraRig.rightControllerAnchor.forward);
+            // Plane ceiling = new Plane(Vector3.down, locateCeiling.ceilingHeight);
+            Ray castRay = new Ray(ovrCameraRig.centerEyeAnchor.position, ovrCameraRig.centerEyeAnchor.forward);
             float castDistance;
             
             //cursor state:
@@ -148,12 +165,12 @@ namespace Pixelplacement.XRTools
             //rotation:
             if (_onCeiling)
             {
-                Vector3 flatForward = Vector3.ProjectOnPlane(ovrCameraRig.rightControllerAnchor.forward, Vector3.up);
+                Vector3 flatForward = Vector3.ProjectOnPlane(ovrCameraRig.centerEyeAnchor.forward, Vector3.up);
                 cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, Quaternion.LookRotation(flatForward), Time.deltaTime * _lerpSpeed);
             }
             else
             {
-                Quaternion rotation = Quaternion.LookRotation(ovrCameraRig.rightControllerAnchor.forward);
+                Quaternion rotation = Quaternion.LookRotation(ovrCameraRig.centerEyeAnchor.forward);
                 cursor.transform.rotation = Quaternion.Slerp(cursor.transform.rotation, rotation, Time.deltaTime * _lerpSpeed);
             }
             

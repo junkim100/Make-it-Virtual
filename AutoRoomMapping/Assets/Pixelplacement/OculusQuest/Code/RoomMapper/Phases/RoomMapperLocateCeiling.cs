@@ -9,6 +9,10 @@ namespace Pixelplacement.XRTools
         public LineRenderer connectionLine;
         public ChildActivator cursor;
 
+        public float ceilingDistance;
+        public float ceilingHeight;
+        public Vector3 firstCorner;
+
         //Private Variables:
         private bool _aboveHead;
         private float _lerpSpeed = 3.5f;
@@ -34,12 +38,12 @@ namespace Pixelplacement.XRTools
         private void Update()
         {
             //parts:
-            Plane wall = new Plane(-locateWall.transform.forward, locateWall.transform.position);
-            Ray castRay = new Ray(ovrCameraRig.rightControllerAnchor.position, ovrCameraRig.rightControllerAnchor.forward);
+            Plane edge = new Plane(-locateWall.transform.forward, locateWall.transform.position);
+            Ray castRay = new Ray(ovrCameraRig.centerEyeAnchor.position, ovrCameraRig.centerEyeAnchor.forward);
             float castDistance;
             
             //cast:
-            wall.Raycast(castRay, out castDistance);
+            edge.Raycast(castRay, out castDistance);
 
             //current state:
             if (transform.position.y > ovrCameraRig.centerEyeAnchor.position.y)
@@ -59,7 +63,7 @@ namespace Pixelplacement.XRTools
                 }
             }
             
-            //position:
+            // position:
             Vector3 location = locateWall.transform.position;
             location.y = castRay.GetPoint(castDistance).y;
             transform.position = Vector3.Lerp(transform.position, location, Time.deltaTime * _lerpSpeed);
@@ -67,16 +71,27 @@ namespace Pixelplacement.XRTools
             //lines:
             if (_aboveHead)
             {
-                Vector3 controllerPosition = connectionLine.transform.InverseTransformPoint(ovrCameraRig.rightControllerAnchor.position);
-                connectionLine.SetPosition(0, controllerPosition);
-                connectionLine.SetPosition(3, controllerPosition);
+                Vector3 headPosition = connectionLine.transform.InverseTransformPoint(ovrCameraRig.centerEyeAnchor.position);
+                connectionLine.SetPosition(0, headPosition);
+                connectionLine.SetPosition(3, headPosition);
             }
+
+            float groundHeight = ovrCameraRig.centerEyeAnchor.position.y;
+            float viewAngle = 360 - ovrCameraRig.centerEyeAnchor.rotation.eulerAngles.x;
+            float rad = viewAngle * Mathf.Deg2Rad;
+            ceilingDistance = Mathf.Tan(rad) * locateWall.groundDistance;
+            ceilingHeight = ceilingDistance + groundHeight;
+
+            Debug.Log("Viewing Angle: " + viewAngle);
+            Debug.Log("Ceiling Distance: " + ceilingDistance);
+            Debug.Log("Ceiling Height: " + ceilingHeight);
             
             //confirmation:
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
             {
                 if (_aboveHead)
                 {
+                    firstCorner = new Vector3(locateWall.transform.position.x, ceilingHeight, locateWall.transform.position.z);
                     Next();
                 }
             }

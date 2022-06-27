@@ -1443,10 +1443,10 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0, y: 0, z: -1}
-  - {x: -1, y: 0, z: 0}
-  - {x: 1, y: 0, z: 0}
-  - {x: 0, y: 0, z: -1}
+  - {x: 0.1, y: 0, z: -1}
+  - {x: 0, y: 0, z: 0}
+  - {x: -0.1, y: 0, z: -1}
+  - {x: 0.1, y: 0, z: -1}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -2123,13 +2123,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'W
+  m_text: 'E
 
-    A
+    D
 
-    L
+    G
 
-    L'
+    E'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e056a52b592397a41b7243f15873f465, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: e056a52b592397a41b7243f15873f465, type: 2}
@@ -2692,7 +2692,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: WALL
+  m_text: 'E
+
+    D
+
+    G
+
+    E'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e056a52b592397a41b7243f15873f465, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: e056a52b592397a41b7243f15873f465, type: 2}
@@ -2915,6 +2921,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursor: {fileID: 2482044697099521139}
   connectionLine: {fileID: 2482044695466222987}
+  groundCastDistance: 0
+  groundHeight: 0
+  groundDistance: 0
 --- !u!114 &2482044697099521139
 MonoBehaviour:
   m_ObjectHideFlags: 0
