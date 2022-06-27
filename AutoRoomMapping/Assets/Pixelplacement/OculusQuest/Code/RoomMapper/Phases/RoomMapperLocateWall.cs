@@ -35,7 +35,7 @@ namespace Pixelplacement.XRTools
         {
             //parts:
             Plane floor = new Plane(Vector3.up, RoomAnchor.Instance.transform.position);
-            Ray castRay = new Ray(ovrCameraRig.rightControllerAnchor.position, ovrCameraRig.rightControllerAnchor.forward);
+            Ray castRay = new Ray(ovrCameraRig.centerEyeAnchor.position, ovrCameraRig.centerEyeAnchor.forward);
             float castDistance;
             
             //cursor state:
@@ -62,6 +62,11 @@ namespace Pixelplacement.XRTools
                 castDistance = _maxCastDistance;
             }
             
+            // height is camera's height
+            // groundDistance is distance from camera to floor
+            float height = ovrCameraRig.centerEyeAnchor.position.y;
+            float groundDistance = Mathf.Sqrt(Mathf.Pow(castDistance,2) - Mathf.Pow(height,2));
+            
             //position (force to floor):
             Vector3 position = castRay.GetPoint(castDistance);
             if (_onFloor)
@@ -75,21 +80,21 @@ namespace Pixelplacement.XRTools
             //rotation:
             if (_onFloor)
             {
-                Vector3 flatForward = Vector3.ProjectOnPlane(ovrCameraRig.rightControllerAnchor.forward, Vector3.up);
+                Vector3 flatForward = Vector3.ProjectOnPlane(ovrCameraRig.centerEyeAnchor.forward, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(flatForward), Time.deltaTime * _lerpSpeed);
             }
             else
             {
-                Quaternion rotation = Quaternion.LookRotation(ovrCameraRig.rightControllerAnchor.forward);
+                Quaternion rotation = Quaternion.LookRotation(ovrCameraRig.centerEyeAnchor.forward);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * _lerpSpeed);
             }
             
             //lines:
             if (_onFloor)
             {
-                Vector3 controllerPosition = connectionLine.transform.InverseTransformPoint(ovrCameraRig.rightControllerAnchor.position);
-                connectionLine.SetPosition(0, controllerPosition);
-                connectionLine.SetPosition(3, controllerPosition);
+                Vector3 headPosition = connectionLine.transform.InverseTransformPoint(ovrCameraRig.centerEyeAnchor.position);
+                connectionLine.SetPosition(0, headPosition);
+                connectionLine.SetPosition(3, headPosition);
             }
             
             //confirmation:
