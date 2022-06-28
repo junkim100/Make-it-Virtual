@@ -4,45 +4,48 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class DebugDisplay : MonoBehaviour
+namespace lemnel.AutoRoomMapper
 {
-    Dictionary<string, string> debugLogs = new Dictionary<string, string>();
-    public TextMeshProUGUI display;
-
-    private void OnEnable()
+    public class DebugDisplay : MonoBehaviour
     {
-        Application.logMessageReceived += HandleLog;
-    }
+        Dictionary<string, string> debugLogs = new Dictionary<string, string>();
+        public TextMeshProUGUI display;
 
-    private void OnDisable()
-    {
-        Application.logMessageReceived -= HandleLog;
-    }
-
-    void HandleLog(string logString, string stackTrace, LogType type)
-    {
-        if (type == LogType.Log)
+        private void OnEnable()
         {
-            string[] splitString = logString.Split(char.Parse(":"));
-            string debugKey = splitString[0];
-            string debugValue = splitString.Length > 1 ? splitString[1] : "";
-
-            if (debugLogs.ContainsKey(debugKey))
-                debugLogs[debugKey] = debugValue;
-            else
-                debugLogs.Add(debugKey, debugValue);
-
+            Application.logMessageReceived += HandleLog;
         }
 
-        string displayText = "";
-        foreach (KeyValuePair<string, string> log in debugLogs) 
+        private void OnDisable()
         {
-            if (log.Value == "")
-                displayText += log.Key + "\n";
-            else
-                displayText += log.Key + ": " + log.Value + "\n";
+            Application.logMessageReceived -= HandleLog;
         }
 
-        display.text = displayText;
+        void HandleLog(string logString, string stackTrace, LogType type)
+        {
+            if (type == LogType.Log)
+            {
+                string[] splitString = logString.Split(char.Parse(":"));
+                string debugKey = splitString[0];
+                string debugValue = splitString.Length > 1 ? splitString[1] : "";
+
+                if (debugLogs.ContainsKey(debugKey))
+                    debugLogs[debugKey] = debugValue;
+                else
+                    debugLogs.Add(debugKey, debugValue);
+
+            }
+
+            string displayText = "";
+            foreach (KeyValuePair<string, string> log in debugLogs) 
+            {
+                if (log.Value == "")
+                    displayText += log.Key + "\n";
+                else
+                    displayText += log.Key + ": " + log.Value + "\n";
+            }
+
+            display.text = displayText;
+        }
     }
 }
