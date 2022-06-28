@@ -10,26 +10,41 @@ namespace lemnel.AutoRoomMapper
     {
         public TextMeshProUGUI timeText;
         public int sec;
+        private int SEC;
+        private bool start = false;
 
-        void Start ()
+        public void TimerSetup()
         {
+            SEC = sec;
             timeText.text = sec.ToString();
-            StartCoroutine (second ());
+            StartCoroutine(second());
         }
 
-        void Update ()
+        public void TimerStart()
         {
+            start = true;
             if (sec < 0) {
                 timeText.text = "!";
-                StopCoroutine (second ());
+                StopCoroutine(second());
             }
         }
-        IEnumerator second()
+
+        public void TimerStop() {
+            start = false;
+            sec = SEC;
+            timeText.text = sec.ToString();
+            StopCoroutine(second());
+        }
+
+        public IEnumerator second()
         {
             yield return new WaitForSeconds (1f);
-            sec--;
+            if (start)
+                sec--;
+            if (sec < 0)
+                TimerStop();
             timeText.text = sec.ToString();
-            StartCoroutine (second ());
+            StartCoroutine(second());
         }
     }
 }

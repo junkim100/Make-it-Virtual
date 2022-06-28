@@ -7,6 +7,7 @@ namespace lemnel.AutoRoomMapper
     public class Crosshair : MonoBehaviour
     {
         public Camera CameraFacing;
+        public CrosshairTimer crosshairTimer;
 
         void Update()
         {

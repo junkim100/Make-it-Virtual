@@ -1,4 +1,6 @@
+using System.Collections;
 using UnityEngine;
+using lemnel.AutoRoomMapper;
 
 namespace Pixelplacement.XRTools
 {
@@ -7,6 +9,7 @@ namespace Pixelplacement.XRTools
         //Public Variables:
         public ChildActivator cursor;
         public LineRenderer connectionLine;
+        public CrosshairTimer crosshairTimer;
 
         public float groundDistance;
         
@@ -15,10 +18,16 @@ namespace Pixelplacement.XRTools
         private Vector3 _positionTarget;
         private float _maxCastDistance = 6f;
         private bool _onFloor;
+
+        void Start() {
+            crosshairTimer.TimerSetup();
+        }
         
         //Startup:
         protected override void Awake()
         {
+            Debug.Log("Start Locate Wall");
+            
             base.Awake();
             
             //sets:
@@ -35,6 +44,7 @@ namespace Pixelplacement.XRTools
         //Loops:
         private void Update()
         {
+            Debug.Log("Inside Update");
             //parts:
             Plane floor = new Plane(Vector3.up, RoomAnchor.Instance.transform.position);
             Ray castRay = new Ray(ovrCameraRig.centerEyeAnchor.position, ovrCameraRig.centerEyeAnchor.forward);
@@ -99,10 +109,13 @@ namespace Pixelplacement.XRTools
             float groundHeight = ovrCameraRig.centerEyeAnchor.position.y;
             groundDistance = Mathf.Sqrt(Mathf.Pow(groundCastDistance,2) - Mathf.Pow(groundHeight,2));
 
+            Debug.Log("time: " + crosshairTimer.sec);
             Debug.Log("groundCastDistance: " + groundCastDistance);
             Debug.Log("groundHeight: " + groundHeight);
             Debug.Log("groundDistance: " + groundDistance);
             Debug.Log("Viewing Angle: " + ovrCameraRig.centerEyeAnchor.rotation.eulerAngles.x);
+
+            StartCoroutine( sleep(1.0f) );
             
             //confirmation:
             if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch))
@@ -113,5 +126,17 @@ namespace Pixelplacement.XRTools
                 }
             }
         }
+
+        private IEnumerator sleep(float seconds)
+        {
+            float prevAngle = ovrCameraRig.centerEyeAnchor.rotation.eulerAngles.x;
+            yield return new WaitForSeconds(seconds);
+            float currAngle = ovrCameraRig.centerEyeAnchor.rotation.eulerAngles.x;
+            if (Mathf.Abs(prevAngle - currAngle) < 1.0f)
+                crosshairTimer.TimerStart();
+            else
+                crosshairTimer.TimerStop();
+        }
+
     }
 }
